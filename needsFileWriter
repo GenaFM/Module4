@@ -1,0 +1,62 @@
+package com.company;
+
+import java.util.Scanner;
+import java.io.*;
+
+public class Main {
+
+    public static boolean inputIsValidBinary(String numberToCheck) { //declares a boolean named inputIsValidBinary that will be testing the string variable named numberToCheck
+        for (int positionBeingTested = 0; positionBeingTested < numberToCheck.length(); positionBeingTested++) { //starting with 0, if the positionBeingTested is less than the length of the input we're using, add 1
+            //this makes it so we aren't testing the 0/1 in the fifth position of a string if the string only had 4 digits. because at least one digit will be checked, this statement always runs
+            if (numberToCheck.charAt(positionBeingTested) != '0' && numberToCheck.charAt(positionBeingTested) != '1') { //if the (I'st/I'nd/I'rd/I'th) character in the string variable named numberToCheck is not 0 or 1 (the only binary numbers)
+                return false; //the input contains something other than a 1 or 0 and therefore isn't binary, so boolean inputIsValidBinary is false
+            }
+        }
+        return true; //declares the binary as true if not already declared false above
+    }
+
+    private static int binaryStringToDecimal(String binaryString) {
+        //Reverse for loop, go from last to first character
+        if (binaryString.length() > 32) { //if the string is too long to be calculated as a binary in Java
+            System.err.println("That number will be larger than the maximum int in java. Please be nice to this poor little program"); //then throw an error
+            return -1;
+        }
+        int decimal = 0;
+        int positionalValue = 1; //because position determines value in binary- 101 is one 1 (valued at one, or * 1) +
+        for (int position = binaryString.length() - 1; position >= 0; position--) {//
+            //java positions start at 0. CAT has a length of 3 but positions titled 012. To get the final position, take the length and subtract 1 so the first position is 0
+            if (binaryString.charAt(position) == '1') {
+                decimal += positionalValue;
+            }
+            positionalValue = positionalValue * 2;
+        }
+        return decimal;
+    }
+
+    public static void main(String[] args) {
+        Scanner in = new Scanner(System.in);
+        String userInput;
+        boolean continueProgram = true;
+        do { //Whether or not our boolean ends up being true,
+            System.out.println("Enter your binary number: "); //first print a prompt for keyboard input
+            userInput = in.next(); //and name that input "userInput"
+            if (inputIsValidBinary(userInput)) { //Then, if
+                System.out.println("Decimal representation is: " + binaryStringToDecimal(userInput));
+                System.out.println("Type y/Y to continue. Type anything else to quit ");
+                userInput = in.next();
+                if (!userInput.toLowerCase().equals("y")) {
+                    continueProgram = false;
+                }
+            } else {
+                System.out.println("Try again.");
+            }
+
+
+        } while (continueProgram);
+
+
+        //This needs fixed.
+        System.out.println("Press enter to exit"); //enter isn't exiting
+        in.next();
+    }
+}
